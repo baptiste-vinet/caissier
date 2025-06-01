@@ -8,12 +8,10 @@ class Caissier :
 
     def create_acount(self, *args): #(value of cash , number of its)
 
-        self.total=0
         self.account={}
         
         for value,number in args:
             
-            self.total+=value*number
             if value in self.account:
                 self.account[value]+=number
             else:
@@ -21,11 +19,17 @@ class Caissier :
 
     
     def print_account(self):
-        print(f"\nMontant total {self.total}")
+
+        self.total=0
+        for cash in self.account:
+            self.total+=self.account[cash]*cash
+        
+        print("\nEtat du compte")
+        print(f"Montant total {self.total} € ")
         print("Détail :")
 
         for cash in self.account:
-            print(f"Nombre billets de {cash} : {self.account[cash]}")
+            print(f"    Nombre billets de {cash} : {self.account[cash]}")
 
     def print_render(self):
         
@@ -33,11 +37,11 @@ class Caissier :
         for cash in self.give:
             self.render+=self.give[cash]*cash
         
-        print(f"\nMontant à rendre {self.render}")
+        print(f"\nMontant à rendre {self.render} €")
         print("Détail :")
 
         for cash in self.give:
-            print(f"Nombre billets de {cash} à rendre  : {self.give[cash]}")
+            print(f"    Nombre billets de {cash} à rendre  : {self.give[cash]}")
 
     def add_money(self,*args):
         
@@ -50,8 +54,16 @@ class Caissier :
                 self.account[value]=number
 
 
-    def give_back(self, given,price):
-
+    def give_back(self,price,*args):
+        
+        give=0
+        given=0
+        
+        for value,number in args:
+            given+=value*number
+  
+        self.add_money(*args)
+        
         account_modifiel={}
         account_modifiel=self.account.copy()
         self.give={}
@@ -108,10 +120,12 @@ def test():
 
     C.create_acount((0.01,30),(0.05,30),(0.1,30),(0.2,30),(0.5,30),(1,30),(2,30),(5,10),(10,20),(20,30),(50,5))
     C.print_account()
-
-    C.give_back(3,1.75)
+    
+    C.give_back(1.75,(1,2),(0.5,1),(0.2,1),(0.05,1))
 
     C.print_render()
+
+    C.print_account()
 
 
 test()
