@@ -17,8 +17,6 @@ class investment:
 
         self.type=types
 
-        print("Enter")
-
         if types==1 :
             self.annuite=amount*r/(1-(1+r)**(-time))
             self.annuite=round(self.annuite,2)
@@ -78,12 +76,39 @@ class investment:
         plt.show()  
 
 
+    def comparaison(self, amount, time,rate):
+
+        sim1=investment()
+        sim2=investment()
+
+        sim1.borrow(amount,time,rate,1)
+        sim2.borrow(amount,time,rate,0)
+
+        sim1_total={"Methode annuités constantes":0,"debourse":0, "total interets":0}
+        sim2_total={"Methode annuités variables":0,"debourse":0, "total interets":0}
+
+        for month in range (len(sim1.agenda)):
+
+            sim1_total["debourse"]+=sim1.agenda[month]["annuite"]
+            sim2_total["debourse"]+=sim2.agenda[month]["annuite"]
+
+            sim1_total["total interets"]+=sim1.agenda[month]["interets"]
+            sim2_total["total interets"]+=sim2.agenda[month]["interets"]
+        
+        print(sim1_total)
+        print(sim2_total)
+
+
+
+
 
 def test():
     I=investment()
-    I.borrow(10000,5,5,0)
-    I.print_borrow()
-    I.plot_borrow()
+    #I.borrow(10000,5,5,0)
+    #I.print_borrow()
+    #I.plot_borrow()
+
+    I.comparaison(10000,5,5)
 
 
 test()
