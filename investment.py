@@ -13,24 +13,24 @@ class investment:
     def borrow(self,amount ,time, rate,types=1): #type==1 --> anuités constantes, type==0 --> anuités variables 
         self.agenda=[]
         remaining_amount=amount
-        r=rate/100
+        r=rate/(100*12)
 
         self.type=types
 
         if types==1 :
-            self.annuite=amount*r/(1-(1+r)**(-time))
+            self.annuite=amount*r/(1-(1+r)**(-time*12))
             self.annuite=round(self.annuite,2)
 
-            for month in range(time):
+            for month in range(time*12):
                 interest=r*remaining_amount
                 refund=self.annuite-interest
                 remaining_amount-=refund
                 self.agenda.append({"mois":month+1,"annuite":self.annuite,"interets":round(interest,2) ,"capital_remboursé":round(refund,2), "capital_restant":round(remaining_amount,2)})
             
         else:
-            refund=amount/time
+            refund=amount/(time*12)
 
-            for month in range(time):
+            for month in range(time*12):
                 interest=r*remaining_amount
                 self.annuite=r*remaining_amount+refund
                 remaining_amount-=refund
@@ -95,8 +95,17 @@ class investment:
             sim1_total["total interets"]+=sim1.agenda[month]["interets"]
             sim2_total["total interets"]+=sim2.agenda[month]["interets"]
         
+
+        sim1_total["debourse"]=round(sim1_total["debourse"],2)
+        sim1_total["total interets"]=round(sim1_total["total interets"],2)
+
+        sim2_total["debourse"]=round(sim2_total["debourse"],2)
+        sim2_total["total interets"]=round(sim2_total["total interets"],2)
+
+        print("\n")
         print(sim1_total)
         print(sim2_total)
+        print(f"Le delta du montant debours est {round(abs(sim2_total['total interets']-sim1_total['total interets']),2)} €")
 
 
 
@@ -104,9 +113,9 @@ class investment:
 
 def test():
     I=investment()
-    #I.borrow(10000,5,5,0)
-    #I.print_borrow()
-    #I.plot_borrow()
+    I.borrow(10000,5,5,1)
+    I.print_borrow()
+    I.plot_borrow()
 
     I.comparaison(10000,5,5)
 
