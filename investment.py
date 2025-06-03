@@ -104,7 +104,7 @@ class investment:
         print(f"Le delta du montant debours est {round(abs(sim2_total['total interets']-sim1_total['total interets']),2)} €")
 
 
-    def simulation(self, amount,rate):
+    def simulation_durée(self, amount,rate):
         simu=[]
         simu_global=[]
         interets=[10,11,12,13,14,15,16,17,18,19,20]
@@ -131,6 +131,8 @@ class investment:
 
 
 
+
+
 def test():
     I=investment()
     #I.borrow(10000,5,5,1)
@@ -139,7 +141,7 @@ def test():
 
     #I.comparaison(10000,5,5)
 
-    I.simulation(10000,5)
+    I.simulation_durée(10000,5)
 
 
 test()
