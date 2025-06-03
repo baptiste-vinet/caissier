@@ -7,8 +7,6 @@ class investment:
         self.agenda=[]
         self.annuite=0
         self.type=1
-
-
         
     def borrow(self,amount ,time, rate,types=1): #type==1 --> anuités constantes, type==0 --> anuités variables 
         self.agenda=[]
@@ -37,9 +35,7 @@ class investment:
 
                 self.agenda.append({"mois":month+1,"annuite":self.annuite,"interets":round(interest,2) ,"capital_remboursé":round(refund,2), "capital_restant":round(remaining_amount,2)})
             
-        
-
-        
+             
     def print_borrow(self):
         for month in (self.agenda):
             print(month)
@@ -108,16 +104,42 @@ class investment:
         print(f"Le delta du montant debours est {round(abs(sim2_total['total interets']-sim1_total['total interets']),2)} €")
 
 
+    def simulation(self, amount,rate):
+        simu=[]
+        simu_global=[]
+        interets=[10,11,12,13,14,15,16,17,18,19,20]
+        for i in range(10,21):
+
+            inv=investment()
+            inv.borrow(amount,i,rate,1)
+            simu.append(inv.agenda)
+            
+        for j in range (len(simu)):
+
+
+            tot_interets=0
+            for i in range(len(simu[j])):
+                tot_interets+=simu[j][i]["interets"]
+
+            simu_global.append(tot_interets)
+        
+        
+        plt.plot(interets,simu_global)
+        plt.grid()
+        plt.title(f"Interets global en en fonction de la durée pour un montant de {amount} € et un taux annuel de {rate} % ")
+        plt.show()
 
 
 
 def test():
     I=investment()
-    I.borrow(10000,5,5,1)
-    I.print_borrow()
-    I.plot_borrow()
+    #I.borrow(10000,5,5,1)
+    #I.print_borrow()
+    #I.plot_borrow()
 
-    I.comparaison(10000,5,5)
+    #I.comparaison(10000,5,5)
+
+    I.simulation(10000,5)
 
 
 test()
